@@ -23,10 +23,12 @@ bool Node::addNeighbor(Node &neb, const int dist){
 	neb.nebSize++;
 
 	neighbors[i]=&neb;
-	distance[i] = dist;
+	nebInfo[i].first = dist;
+	nebInfo[i].second = neb.energy;
 	
 	neb.neighbors[j] = this;
-	neb.distance[j] = dist;
+	neb.nebInfo[j].first = dist;
+	neb.nebInfo[j].second = energy;
 
 	return true;
 }

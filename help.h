@@ -5,6 +5,8 @@
 #define MAX_ENERGY 100
 
 #include <iostream>
+#include <utility>
+using namespace std;
 
 
 class Node{
@@ -19,7 +21,7 @@ public:
 
 //private:
 	Node* neighbors[MAX_NEIGHBOR];
-	int distance[MAX_NEIGHBOR];
+	pair <int,int> nebInfo[MAX_NEIGHBOR];//first is dist, second is power
 	int energy, nebSize;
 
 };
