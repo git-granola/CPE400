@@ -4,16 +4,34 @@
 
 using namespace std;
 
+unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+default_random_engine generator (seed);
+//generator.seed(chrono::system_clock::now().time_since_epoch().count());
+uniform_real_distribution<float> distr(0.0f, 0.99f);
+
+//generator.seed(
+
 int main(){
 
-	Node a1;
-	Node a2(55);
+	int testNum = 5;
 
-	a1.addNeighbor(a2, 10);
+	Node* a = new Node[testNum];
+	int index, dist;
 
-//	cout<<a1.neighbors[0]->energy<<endl<<a1.distance[0]<<'\t'<<a1.neighbors[0]->distance[0]<<endl;
-	cout << a1.neighbors[0]->energy<<endl<<a1.nebInfo[0].first<<'\t'<<a1.neighbors[0]->nebInfo[0].first<<endl;
+	for(int i=0; i<testNum; i++){
+		cout<< i << ":\n";
+		for(int j=0; j<MAX_NEIGHBOR; j++){
+			index = (int)(distr(generator)*(testNum));
+			dist = (int)(distr(generator)*15)+1;
+			cout << a[i].addNeighbor(a[index], dist);
+		}
+		cout<<endl;
+	}
 
-	
+	for(int i=0; i<testNum; i++)
+		a[i].printNeighbors();
+
+	delete[] a;
+
 	return 0;
 }

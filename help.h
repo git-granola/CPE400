@@ -6,6 +6,9 @@
 
 #include <iostream>
 #include <utility>
+#include <random>
+#include <chrono>
+
 using namespace std;
 
 
@@ -13,9 +16,10 @@ class Node{
 public:
 	Node();//create node with default energy
 	Node(int e);//create node with e energy
-	~Node(){}
+	~Node();
 
 	bool addNeighbor(Node &neb, const int dist);//connect this node to node neb at distance dist.  both must be capable of new neighbors
+	void printNeighbors();
 
 
 
@@ -23,7 +27,8 @@ public:
 	Node* neighbors[MAX_NEIGHBOR];
 	pair <int,int> nebInfo[MAX_NEIGHBOR];//first is dist, second is power
 	int energy, nebSize;
-
+	const int id;
+	static int numNodes;
 };
 
 
