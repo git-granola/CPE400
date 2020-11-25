@@ -6,7 +6,6 @@ using namespace std;
 
 unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 default_random_engine generator (seed);
-//generator.seed(chrono::system_clock::now().time_since_epoch().count());
 uniform_real_distribution<float> distr(0.0f, 0.99f);
 
 //generator.seed(
@@ -19,13 +18,11 @@ int main(){
 	int index, dist;
 
 	for(int i=0; i<testNum; i++){
-		cout<< i << ":\n";
 		for(int j=0; j<MAX_NEIGHBOR; j++){
 			index = (int)(distr(generator)*(testNum));
 			dist = (int)(distr(generator)*15)+1;
-			cout << a[i].addNeighbor(a[index], dist);
+			a[i].addNeighbor(a[index], dist);
 		}
-		cout<<endl;
 	}
 
 	for(int i=0; i<testNum; i++)
