@@ -12,23 +12,41 @@ uniform_real_distribution<float> distr(0.0f, 0.99f);
 
 int main(){
 
-	int testNum = 5;
+	Node test[5];
 
-	Node* a = new Node[testNum];
-	int index, dist;
+	test[0].addNeighbor(test[1], 4);
+	test[0].addNeighbor(test[2], 8);
 
-	for(int i=0; i<testNum; i++){
-		for(int j=0; j<MAX_NEIGHBOR; j++){
-			index = (int)(distr(generator)*(testNum));
-			dist = (int)(distr(generator)*15)+1;
-			a[i].addNeighbor(a[index], dist);
-		}
-	}
+	test[1].addNeighbor(test[3], 2);
+	test[1].addNeighbor(test[4], 7);
 
-	for(int i=0; i<testNum; i++)
-		a[i].printNeighbors();
+	test[2].addNeighbor(test[4], 5);
 
-	delete[] a;
+	test[3].addNeighbor(test[4], 3);
+
+	// vector<int> vec (2);
+	// vec[0]=1;
+	// vec[1]=2;
+
+	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
+	// cout << endl;
+
+	// vec.push_back(3);
+
+	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
+	// cout << endl;
+
+	// vector<int> vec2 (vec);
+	// vec2.push_back(4);
+
+	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
+	// cout << endl;
+
+	// for(size_t i=0; i<vec2.size(); i++) cout << vec2[i] << ' ';
+	// cout << endl;
+
+
+	modASearch(test[0], test[4], 1.0, 5);
 
 	return 0;
 }
