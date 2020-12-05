@@ -12,41 +12,31 @@ uniform_real_distribution<float> distr(0.0f, 0.99f);
 
 int main(){
 
-	Node test[5];
+	vector<int> path;
 
-	test[0].addNeighbor(test[1], 4);
-	test[0].addNeighbor(test[2], 8);
+	Node test[6];
 
-	test[1].addNeighbor(test[3], 2);
-	test[1].addNeighbor(test[4], 7);
+	test[0].addNeighbor(test[1], 3);
+	test[0].addNeighbor(test[2], 4);
 
-	test[2].addNeighbor(test[4], 5);
+	test[1].addNeighbor(test[4], 1);
+	test[1].addNeighbor(test[3], 7);
 
-	test[3].addNeighbor(test[4], 3);
+	test[2].addNeighbor(test[3], 10);
+	test[2].addNeighbor(test[4], 3);
 
-	// vector<int> vec (2);
-	// vec[0]=1;
-	// vec[1]=2;
+	test[3].addNeighbor(test[5], 6);
 
-	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
-	// cout << endl;
+	test[4].addNeighbor(test[5], 20);
 
-	// vec.push_back(3);
+	path = modASearch(test[0], test[5], 1.0);
+	sendPkt(test[0], test[5], path);
+	//Now that I have 2 paths...
+	
+	test[1].updateEnergy(100);
 
-	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
-	// cout << endl;
-
-	// vector<int> vec2 (vec);
-	// vec2.push_back(4);
-
-	// for(size_t i=0; i<vec.size(); i++) cout << vec[i] << ' ';
-	// cout << endl;
-
-	// for(size_t i=0; i<vec2.size(); i++) cout << vec2[i] << ' ';
-	// cout << endl;
-
-
-	modASearch(test[0], test[4], 1.0, 5);
+	path = modASearch(test[0], test[5], 0.5);
+	sendPkt(test[0], test[5], path);
 
 	return 0;
 }

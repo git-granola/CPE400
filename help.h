@@ -6,7 +6,8 @@
 
 #define B 1//Broadcast energy cost
 #define G 1//"Get a message" energy cost
-#define T 5//Message transmission energy cost
+#define R 5//Receive packet
+#define S 5//Send packet
 
 #include <iostream>
 #include <utility>
@@ -29,9 +30,13 @@ public:
 	bool updateNeighbor(int index, int updatedNodes);//updates a specific neighbor by index. uses updatedNodes to know how much to notify energy change.
 	void printNeighbors();
 
+	void updateEnergy(int e);
+	int getNebIndex(int nebId);
+	
+
 
 //private:
-	Node* neighbors[MAX_NEIGHBOR];
+	Node* neighbors[MAX_NEIGHBOR];//I'm going to assume that nodes have knowledge of their neighbors ids. Yes, to access this from a code-perspective I'm accessing that neighbor's address but for the sake of easier coding from a simulation perspective, the id of their neighbor isn't changing and as such knows which neighbor has what id
 	pair <float,int> nebInfo[MAX_NEIGHBOR];//first is dist, second is power
 	int energy, nebSize;
 	const int id;
@@ -41,9 +46,13 @@ public:
 
 
 
-bool modASearch(Node& start, Node& dest, float x, int numNodes);
+vector<int> modASearch(Node& start, Node& dest, float x);
 
-pair <float, vector<int>> hSearch(Node& start, Node& dest, float x, float g, vector<int> path);//Takes Start and Dest node with energy weight x. Returns shortest distance
+pair <float, vector<int>> hSearch(Node& start, Node& dest, float x, pair <float, float> g, vector<int> path);//Takes Start and Dest node with energy weight x. Returns shortest distance
+
+void printPath(vector<int> path);
+
+bool sendPkt(Node& start, Node& dest, vector<int> path);
 
 
 #endif
