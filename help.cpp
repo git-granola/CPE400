@@ -1,6 +1,13 @@
 #include"help.h"
 
 
+void printWeb(Node* arr, int size){
+	for(int i=0; i<size; i++){
+		arr[i].printNeighbors();
+		cout<<endl;
+	}
+}
+
 bool sendPkt(Node& start, Node& dest, vector<int> path){
 	if(path[0]!=start.id || path[path.size()-1]!=dest.id){
 		cout << "Not a valid path!"<<endl;
@@ -64,6 +71,8 @@ vector<int> modASearch(Node& start, Node& dest, float x){
 		//We also ignore THIS nodes energy lost because the energy cost doesnt make a difference here. it'll always be the same cost so we can basically ignore it.
 		//Each value returned is compared and the "cheapest" path is chosen.
 		//Each path that makes it back here is the cheapest recursive sum of that neighbor.
+
+		start.energy -= B - G;//because it has to send and receive a transmission packet each time
 		pair <float, vector<int>> temp ( hSearch(*start.neighbors[i], dest, x, pair <float, float> (x*start.nebInfo[i].first, (1.0-x)*(S + R + MAX_ENERGY - start.nebInfo[i].second)), path));
 		if(temp.first < ret.first) ret = temp;
 	}
@@ -96,6 +105,7 @@ pair <float, vector<int>> hSearch(Node& start, Node& dest, float x, pair <float,
 	}
 
 	if(start.id==dest.id){
+		start.energy -= B - G;//it gets this AND then it sends a message back
 		ret.first = g.first + (float)g.second;
 		return ret;
 	}
@@ -109,14 +119,19 @@ pair <float, vector<int>> hSearch(Node& start, Node& dest, float x, pair <float,
 			}
 		}
 		if(!backtrack && ((start.neighbors[i]->id == dest.id && start.neighbors[i]->energy > G + R) || 
-			(start.neighbors[i]->energy > S+R+B+G) )){//this makes sure that the node has at least enough energy to actually send and/or receive the packet and do proper transmissions for its neighbors.
+			(start.neighbors[i]->energy > S+R+B+G) )){//this makes sure that the node has at least enough energy to actually send and/or receive the packet and do proper transmissions for its neighbors.  If it doesn't, even if THIS node doesn't know, not returning anything keeps the cost at maximum.
 
 			//+R+S because this node is going to send AND receive a node as a part of the cost
+
+			start.energy -= B - G;//since it has to broadcast AND receives each return
+
 			pair <float, vector<int>> temp (hSearch(*start.neighbors[i], dest, x, pair <float, float> (g.first + x*start.nebInfo[i].first , g.second + (1.0-x)*(S + R + MAX_ENERGY - start.nebInfo[i].second)), vec));
 
 			if(temp.first < ret.first) ret = temp;
 		}
 	}
+
+	start.energy -= B;//because it has to send a broadcast back up the line
 	return ret;
 }
 
@@ -196,9 +211,9 @@ bool Node::addNeighbor(Node &neb, const float dist){
 }
 
 void Node::printNeighbors(){
-	cout<<id<<":\n";
+	cout<<id<<":["<<energy<<"]\n";
 	for(int i=0; i<nebSize; i++){
-		cout<<"\t-- (" << nebInfo[i].first <<':'<<nebInfo[i].second << ")\t->"<< neighbors[i]->id << endl; 
+		cout<<"\t-- (" << nebInfo[i].first <<":["<<nebInfo[i].second << "])\t->"<< neighbors[i]->id << endl; 
 	}
 }
 

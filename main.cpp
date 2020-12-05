@@ -29,14 +29,22 @@ int main(){
 
 	test[4].addNeighbor(test[5], 20);
 
-	path = modASearch(test[0], test[5], 1.0);
-	sendPkt(test[0], test[5], path);
-	//Now that I have 2 paths...
-	
-	test[1].updateEnergy(100);
+	printWeb(test, 6);
 
 	path = modASearch(test[0], test[5], 0.5);
 	sendPkt(test[0], test[5], path);
+	printWeb(test, 6);
+
+
+	path = modASearch(test[0], test[5], 0.5);
+	sendPkt(test[0], test[5], path);
+	printWeb(test, 6);
+
+
+	path = modASearch(test[0], test[5], 0.5);
+	sendPkt(test[0], test[5], path);
+	printWeb(test, 6);
+
 
 	return 0;
 }
